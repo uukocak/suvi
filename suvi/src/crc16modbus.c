@@ -4,7 +4,7 @@
  *  Created on: Dec 29, 2019
  *      Author: Umut Utku Kocak
  */
-#include <msp430fr2433.h>
+#include <msp430.h>
 #include <stdint.h>
 #include "crc16modbus.h"
 

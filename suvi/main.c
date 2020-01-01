@@ -4,7 +4,7 @@
  *  Created on: Oct 30, 2019
  *      Author: Umut Utku Kocak
  */
-#include <msp430fr2433.h>
+#include <msp430.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
@@ -14,8 +14,7 @@
 #include "delay.h"
 #include "ele417server.h"
 #include "crc16modbus.h"
-
-#define wait_time 1100
+#include "utils.h"
 
 bool package_ready = false;
 uint8_t afterscaler = 0;
@@ -51,18 +50,16 @@ void main(void)
     uart_init(0); //Default settings for UCA0CTLW0 register
     delay_init(1); // Default 1Mhz clock selected
 
-    P1DIR |= BIT0 | BIT1;    //set P1.0 , P1.1 output (LEDs)
-    P2DIR &= ~(BIT3 | BIT7); //set P2.3 , P2.7 input (Buttons)
-    P2REN |= BIT3;    //enable P2.3 , P2.7 pull up/pull down resistors
-    P2OUT |= BIT3;    //set P2.3 , P2.7 pull-up resistor
+    initLED();
+    initBUTTON();
 
-    P1OUT &= ~( BIT0 | BIT1 );
-    P2IE |= BIT3;
-    P2IFG &= ~BIT3;
+    P6DIR |= (BIT2); // 2-> ESP nRST mosfet
+    P6OUT &= ~(BIT2); // 2-> ESP nRST mosfet
 
-    TA0CTL = TASSEL1 | MC_1 | ID_3;
-    TA0CCTL0 = CCIE;
-    TA0CCR0 = 65535;
+    //2433 TA , 2355 TB
+    TB0CTL = TBSSEL1 | MC_1 | ID_3;
+    TB0CCTL0 = CCIE;
+    TB0CCR0 = 65535;
 
     __bis_SR_register(GIE);
 
@@ -70,34 +67,45 @@ void main(void)
     {
         if(package_ready)
         {
-            P1OUT |= BIT1;
+            //greenLED(SET);
             c_state = DISABLE_STATE;
         }
         else
         {
-            P1OUT &= ~BIT1;
+            //greenLED(RESET);
             //c_state = IDLE_STATE;
         }
 
+        if(readBUTTON(BUTTON1))
+        {
+            P6OUT |= BIT2;
+            greenLED(SET);
+        }
+        else
+        {
+            P6OUT &= ~(BIT2);
+            greenLED(RESET);
+        }
         delay_ms(10);
 
     }
 }
 
-#pragma vector=TIMER0_A0_VECTOR
-__interrupt void timer_A(void)
+//2433 TA , 2355 TB
+#pragma vector=TIMER0_B0_VECTOR
+__interrupt void timer_B(void)
 {
     if(afterscaler < 3)
         afterscaler++;
     else
     {
-        P1OUT ^= BIT0;  // Toggle P1.0
+        redLED(TOGGLE);
         if(package_ready)
         {
             check = (uint16_t)(rec_buff[RESP_LEN-2] << 8);
             check |= (uint16_t)rec_buff[RESP_LEN-1];
             if(check == calculateCRC((uint8_t *)rec_buff, RESP_LEN))
-                P1OUT &= ~BIT1;
+                //P6OUT &= ~BIT6;
 
             sprintf(string2send,"WEB%s",(char*)rec_buff);
             string2send[RESP_LEN-1] = 0x00;
@@ -127,7 +135,6 @@ __interrupt void timer_A(void)
 
     }
 
-    P2IFG &= ~BIT3; // P1.3 interrupt flag cleared
 }
 
 #pragma vector=USCI_A0_VECTOR
@@ -136,7 +143,7 @@ __interrupt void USCI0RX_ISR(void)
     switch(c_state)
     {
     case IDLE_STATE:
-        if(inRange(0x0001,0x000B,UCA0RXBUF))
+        if((UCA0RXBUF >= 0x0001) && (UCA0RXBUF <= 0x000B))
             n_state = LEN_STATE;
         else
             n_state = IDLE_STATE;
@@ -171,12 +178,9 @@ __interrupt void USCI0RX_ISR(void)
 
     dummy = UCA0RXBUF;
 
-    P1OUT &= ~BIT0;
+    redLED(RESET);
     c_state = n_state;
 
 }
 
-bool inRange(uint16_t low, uint16_t high, uint16_t x)
-{
-    return  ((x-low) <= (high-low));
-}
+

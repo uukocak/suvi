@@ -4,7 +4,7 @@
  *  Created on: Oct 29, 2019
  *      Author: Umut Utku Kocak
  */
-#include <msp430fr2433.h>
+#include <msp430.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
@@ -54,7 +54,13 @@ char* uart_receive_data(uint16_t rx_timeout)
 void uart_init(uint16_t UART_CONFIG)
 {
     // Configure UART pins
+    #if defined (__MSP430FR2355__)
+    P1SEL0 |= BIT6 | BIT7;          // set 2-UART pin as second function
+    #elif efined (__MSP430FR2433__)
     P1SEL0 |= BIT4 | BIT5;          // set 2-UART pin as second function
+    #else
+    #error "Failed to match a default include file"
+    #endif
 
     // Configure UART
     UCA0CTLW0 |= UCSWRST;       // Put eUSCI in reset
