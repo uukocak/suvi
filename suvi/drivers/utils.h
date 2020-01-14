@@ -20,10 +20,12 @@
 #define BTN1_O P4OUT
 #define BTN1_D P4DIR
 #define BTN1_I P4IN
+#define BTN1_REN P4REN
 #define BTN1_BIT BIT1
 #define BTN2_O P2OUT
 #define BTN2_D P2DIR
 #define BTN2_I P2IN
+#define BTN2_REN P2REN
 #define BTN2_BIT BIT3
 #elif defined (__MSP430FR2433__)
 #define REDLED_O P1OUT
@@ -37,10 +39,12 @@
 #define BTN1_O P2OUT
 #define BTN1_D P2DIR
 #define BTN1_I P2IN
+#define BTN1_REN P2REN
 #define BTN1_BIT BIT3
 #define BTN2_O P2OUT
 #define BTN2_D P2DIR
 #define BTN2_I P2IN
+#define BTN2_REN P2REN
 #define BTN2_BIT BIT7
 #else
 #error "Failed to match a default include file"

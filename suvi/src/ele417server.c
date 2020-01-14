@@ -6,6 +6,7 @@
  */
 
 #include <stdbool.h>
+#include <msp430.h>
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
@@ -95,4 +96,69 @@ bool getData(datatype_t type)
     }
 
     return true;
+}
+
+state_e uartReceive(char * rec_buff)
+{
+    static state_e c_state = IDLE_STATE;
+    static state_e n_state = IDLE_STATE;
+
+    uint16_t LOCAL_RXBUF = UCA1RXBUF;
+    switch(c_state)
+    {
+        case IDLE_STATE:
+            uart_phase.package_ready = false;
+            if(LOCAL_RXBUF == 0x00AA)
+                n_state = START_STATE;
+            else
+                n_state = IDLE_STATE;
+            break;
+
+        case START_STATE:
+            if((LOCAL_RXBUF >= 0x0001) && (LOCAL_RXBUF <= 0x000B))
+            {
+                uart_phase.isNR = false;
+                n_state = LEN_STATE;
+            }
+            else if (LOCAL_RXBUF == 0x0040)
+            {
+                uart_phase.package_ready = true;
+                uart_phase.isNR = true;
+                n_state = IDLE_STATE;
+            }
+            else
+            {
+                n_state = IDLE_STATE;
+            }
+            break;
+
+        case LEN_STATE:
+            uart_phase.RESP_LEN = LOCAL_RXBUF;
+            uart_phase.buff_index = 0;
+            n_state = RECEIVE_STATE;
+            break;
+
+        case RECEIVE_STATE:
+            if(uart_phase.buff_index < uart_phase.RESP_LEN-3)
+            {
+                rec_buff[uart_phase.buff_index] = LOCAL_RXBUF;
+                uart_phase.buff_index++;
+                n_state = RECEIVE_STATE;
+            }
+            else
+            {
+                rec_buff[uart_phase.buff_index] = LOCAL_RXBUF;
+                uart_phase.buff_index = 0;
+                uart_phase.package_ready = true;
+                n_state = IDLE_STATE;
+            }
+            break;
+
+        case END_STATE:
+            n_state = IDLE_STATE;
+            break;
+    }
+
+    c_state = n_state;
+    return c_state;
 }

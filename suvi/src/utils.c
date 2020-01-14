@@ -9,6 +9,8 @@
 #include <stdbool.h>
 #include <utils.h>
 
+//TODO: ADD ESP control functions
+
 bool inline inRange(uint16_t low, uint16_t high, uint16_t x)
 {
     return  ((x-low) <= (high-low));
@@ -75,8 +77,10 @@ bool readBUTTON(btn_t button)
 void initBUTTON(void)
 {
     BTN1_D &= ~BTN1_BIT;
+    BTN1_REN &= BTN1_BIT;
     BTN1_O |= BTN1_BIT;
     BTN2_D &= ~BTN2_BIT;
+    BTN2_REN &= BTN2_BIT;
     BTN2_O |= BTN2_BIT;
 }
 

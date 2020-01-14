@@ -7,7 +7,7 @@
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROJECT.MSP430FR2355.ccxml.TI MSP430 USB1/MSP430" value="suvi"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROJECT.MSP430FR2433.ccxml.TI MSP430 USB1/MSP430" value="suvi"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_TARGET_CONFIG" value="${target_config_active_default:suvi}"/>
-<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.MSP430FR2355.ccxml.TI MSP430 USB1/MSP430" value="C:/Users\UmutUtku\git\CCS_repo\suvi\Debug\suvi.out"/>
+<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.MSP430FR2355.ccxml.TI MSP430 USB1/MSP430" value="C:/Users\UmutUtku\git\CCS_repo\suvi\Release\suvi.out"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.MSP430FR2433.ccxml.TI MSP430 USB1/MSP430" value="C:/Users\UmutUtku\git\CCS_repo\suvi\Debug\suvi.out"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
 <listEntry value="/suvi"/>
