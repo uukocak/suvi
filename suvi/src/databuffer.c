@@ -8,21 +8,22 @@
 #include <stdint.h>
 
 struct _databuffer_t{
-    char temperature[12];
-    char airpressure[12];
-    char humidity[12];
-    char windspeed[12];
-    char cloudiness[12];
-    char weatherstatus[12];
-    char time[12];
-    char date[12];
-    char uptime[12];
-    char systemtemp[12];
-    char clientnum[12];
+    char temperature[16];
+    char airpressure[16];
+    char humidity[16];
+    char windspeed[16];
+    char cloudiness[16];
+    char weatherstatus[16];
+    char time[16];
+    char date[16];
+    char uptime[16];
+    char systemtemp[16];
+    char clientnum[16];
     uint16_t serlog;
     uint16_t weblog;
     uint16_t lcdlog;
     uint16_t sdlog;
+    uint16_t crclog;
 }_databuffer;
 
 
@@ -41,6 +42,9 @@ void setLog(logtype_t logt,datatype_t datat)
         break;
     case SD:
         _databuffer.sdlog |= datat;
+        break;
+    case CRC:
+        _databuffer.crclog |= datat;
         break;
     }
 
@@ -80,6 +84,9 @@ uint16_t getLog(logtype_t logt)
         break;
     case SD:
         tempLog =  _databuffer.sdlog;
+        break;
+    case CRC:
+        tempLog =  _databuffer.crclog;
         break;
     default:
         tempLog =  0;
@@ -127,6 +134,9 @@ char* getBuffer(datatype_t type)
             break;
         case CLIENTNUM:
             tempBufferp = (char*) &(_databuffer.clientnum);
+            break;
+        default:
+            tempBufferp = (char*) &(_databuffer.temperature);
             break;
     }
 

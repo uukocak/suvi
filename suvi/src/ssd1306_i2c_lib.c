@@ -39,7 +39,7 @@ void i2c_init () {
     // Configure USCI_B0 for I2C mode
     UCB0CTLW0 |= UCSWRST;                             // put eUSCI_B in reset state
     UCB0CTLW0 |= UCMODE_3 | UCMST;                    // I2C master mode, SMCLK
-    UCB0BRW = 0x8;                                    // baudrate = SMCLK / 8
+    UCB0BRW = 0x2;                                    // baudrate = SMCLK / 8 (default == 8)
     UCB0CTLW0 &=~ UCSWRST;                            // clear reset register
     UCB0IE |= UCTXIE0 | UCNACKIE;                     // transmit and NACK interrupt enable
 
@@ -50,13 +50,13 @@ void i2c_transmit (unsigned char *params, unsigned char flag) {
 
     TI_transmit_field = params;
 
-    __delay_cycles(5000);
+    __delay_cycles(2000);
     UCB0I2CSA = SlaveAddress;              // configure slave address
     TXByteCtr = flag;                                    // Load TX byte counter
     while (UCB0CTLW0 & UCTXSTP);                      // Ensure stop condition got sent
     UCB0CTLW0 |= UCTR | UCTXSTT;                      // I2C TX, start condition
 
-    __delay_cycles(2500);
+    __delay_cycles(2000);
 
 }
 //******************************************************************************************************************************************

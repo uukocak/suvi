@@ -12,19 +12,21 @@
 #include <stdbool.h>
 
 typedef enum{
+    WEATHERSTATUS = 0x0020,
     TEMPERATURE = 0x0001,
     AIRPRESSURE = 0x0002,
     HUMIDITY = 0x0004,
     WINDSPEED = 0x0008,
     CLOUDINESS = 0x0010,
-    WEATHERSTATUS = 0x0020,
-    TIME = 0x0040,
     DATE = 0x0080,
+    TIME = 0x0040,
     UPTIME = 0x0100,
     SYSTEMTEMP = 0x0200,
     CLIENTNUM = 0x0400,
     TEST = 0x0800,
     TIME_DATE,
+    BATTERY = 0x1000,
+    INIT = 0x8000
 } datatype_t;
 
 typedef enum{

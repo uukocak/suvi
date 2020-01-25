@@ -65,7 +65,9 @@ void uart_init(uint16_t UART_CONFIG)
 
     // Configure UART
     UCA1CTLW0 |= UCSWRST;       // Put eUSCI in reset
-    UCA1CTLW0 |= UCSSEL_2;      // Chose SMCLK as clock source
+    //UCA1CTLW0 |= UCSSEL_2;      // Chose SMCLK as clock source
+    UCA1CTLW0 |= UCSSEL_1;      //ACLK
+
 
     // Baud Rate calculation for 115200 with SMCLK (1MHz)
     // 1000000/115200 = 8.68
@@ -79,9 +81,14 @@ void uart_init(uint16_t UART_CONFIG)
     // UCBRFx = INT([(N/16) � INT(N/16)] � 16) = INT((6.5104 - 6) x 16 ) = INT(8.1664) = 8
     // UCBRSx = UGtable(N-INT(N)) = UGtable(0.1667) = 0x11
 
+    /*
     UCA1BR0 = 6;
     UCA1BR1 = 0;
     UCA1MCTLW = 0x2200 | UCOS16 | UCBRF_13;
+    */
+    UCA1BR0 = 3;
+    UCA1BR1 = 0;
+    UCA1MCTLW = 0x9200 | UCBRF_3;
 
     UCA1IE |= UART_CONFIG;
     UCA1CTLW0 &= ~UCSWRST;          // Initialize eUSCI

@@ -15,5 +15,6 @@ void draw6x8Str(unsigned char x, unsigned char p, const char str[],
                         unsigned char invert, unsigned char underline);
 void draw12x16Str(unsigned char x, unsigned char y, const char str[],
                           unsigned char invert);
+void refreshScreen(void);
 
 #endif /* SSD1306_LIB_H_ */

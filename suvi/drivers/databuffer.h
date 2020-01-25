@@ -10,7 +10,7 @@
 
 #include "ele417server.h"
 
-typedef enum { SERVER, WEB, LCD, SD } logtype_t;
+typedef enum { SERVER, WEB, LCD, SD, CRC} logtype_t;
 
 void setLog(logtype_t logt,datatype_t datat);
 void resetLog(logtype_t logt,datatype_t datat);
