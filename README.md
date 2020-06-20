@@ -1,5 +1,5 @@
 # suvi
-Suvi is a IoT device that bridges data from a server to the embedded OLED and a local network.
+Suvi is an IoT device that bridges data from a server to the embedded OLED and a local network.
 
 Suvi designed as an ELE417 - Embedded System Design Project. Purpose of this device is basically receiving data from an data provider and broadcast it into embedded LCD screen and to a web based platform. Data received from **IoT** service data provider over **TCP connection** via **ESP8266** module over Wi-Fi. Then data processed on the embedded **MSP430** platform. The outcomes are shared with to the user by both via **OLED screen** display and a website on a private network.
 
@@ -29,7 +29,12 @@ Prototype designed as a handheld device. A custom PCB and housing is prepared fo
 
 <p align="center">
 <img src="/docs/pcb1.jpg" width="400">
-<img src="/docs/case2.jpg" width="400">
+<img src="/docs/case2_t.png" width="400">
+</p>
+
+## Demo
+<p align="center">
+<img src="/docs/demo1.fig">
 </p>
 
 ## Group Members 
