@@ -26,7 +26,6 @@ Prototype designed as a handheld device. A custom PCB and housing is prepared fo
 <img src="/docs/case1.jpg" width="400" height="300">
 <img src="/docs/pcb2.jpg" width="400" height="300">
 </p>
-
 <p align="center">
 <img src="/docs/pcb1.jpg" width="400">
 <img src="/docs/case2_t.png" width="400">
@@ -34,7 +33,7 @@ Prototype designed as a handheld device. A custom PCB and housing is prepared fo
 
 ## Demo
 <p align="center">
-<img src="/docs/demo1.fig">
+<img src="/docs/demo1.gif">
 </p>
 
 ## Group Members 
